@@ -151,19 +151,23 @@
         bottom: auto;
         top: 50%;
         left: calc(100% + 8px);
+        right: auto;
         transform: translateY(-50%) translateX(4px);
         white-space: normal;
-        max-width: 200px;
+        width: auto;
       }
       .hover-reveal .reveal-text::after {
-        top: 50%;
+        top: auto;
         left: auto;
+        bottom: auto;
         right: 100%;
         transform: translateY(-50%);
+        top: 50%;
         border: 5px solid transparent;
         border-right-color: #e8ede4;
       }
       .dark .hover-reveal .reveal-text::after {
+        border-top-color: transparent;
         border-right-color: #2d3a27;
       }
       .hover-reveal:hover .reveal-text {
@@ -590,6 +594,20 @@
     });
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Mobile: set bubble width to fit remaining screen space
+    function updateBubbleWidths() {
+      if (window.innerWidth >= 768) return;
+      document.querySelectorAll('.hover-reveal .reveal-text').forEach(bubble => {
+        const parent = bubble.parentElement;
+        const rect = parent.getBoundingClientRect();
+        const remaining = window.innerWidth - rect.right - 32;
+        bubble.style.width = Math.max(120, remaining) + 'px';
+      });
+    }
+    window.addEventListener('resize', updateBubbleWidths);
+    updateBubbleWidths();
+  </script>
   </script>
 
 </body>
